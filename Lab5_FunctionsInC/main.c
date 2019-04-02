@@ -46,6 +46,7 @@ unsigned long Calc_Area(unsigned long l, unsigned long w) {
   unsigned long result;
 
 // Put your Lab 5 code here
+	result = ( l < 3 || w < 3 || l > 20 || w > 20 ) ? 0 : l * w;
   
   return(result);
 }
