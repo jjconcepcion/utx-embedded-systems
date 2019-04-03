@@ -24,6 +24,9 @@
 #define GPIO_PORTF_PCTL_R       (*((volatile unsigned long *)0x4002552C))
 #define SYSCTL_RCGC2_R          (*((volatile unsigned long *)0x400FE108))
 #define SYSCTL_RCGC2_GPIOF      0x00000020  // port F Clock Gating Control
+#define IS_SWITCH_PRESSED       !(GPIO_PORTF_DATA_R & 0x10)
+#define LED_TOGGLE              (GPIO_PORTF_DATA_R & 0x04) ? GPIO_PORTF_DATA_R & ~(0x04) : GPIO_PORTF_DATA_R | 0x04
+#define LED_ON                  GPIO_PORTF_DATA_R | 0x04;
 
 // basic functions defined at end of startup.s
 void DisableInterrupts(void); // Disable interrupts
@@ -47,15 +50,7 @@ int main(void){ unsigned long volatile delay;
   EnableInterrupts();           // enable interrupts for the grader
   while(1){
     Delay100ms(1);
-    if (!(GPIO_PORTF_DATA_R & 0x10)) { // Toggle LED if switch pressed
-      if (GPIO_PORTF_DATA_R & 0x04) {
-        GPIO_PORTF_DATA_R &= ~(0x04);
-      } else {
-        GPIO_PORTF_DATA_R |= 0x04;
-      }
-    } else {                           // LED ON
-      GPIO_PORTF_DATA_R |= 0x04;
-    }
+    GPIO_PORTF_DATA_R = IS_SWITCH_PRESSED ? LED_TOGGLE : LED_ON;
   }
 }
 
