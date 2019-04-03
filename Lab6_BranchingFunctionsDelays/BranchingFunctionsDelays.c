@@ -29,6 +29,8 @@
 void DisableInterrupts(void); // Disable interrupts
 void EnableInterrupts(void);  // Enable interrupts
 
+void Delay100ms(unsigned long);
+
 int main(void){ unsigned long volatile delay;
   TExaS_Init(SW_PIN_PF4, LED_PIN_PF2);  // activate grader and set system clock to 80 MHz
   // initialization goes here
@@ -45,5 +47,16 @@ int main(void){ unsigned long volatile delay;
   EnableInterrupts();           // enable interrupts for the grader
   while(1){
     // body goes here
+  }
+}
+
+void Delay100ms(unsigned long time){
+  unsigned long i;
+  while(time > 0){
+    i = 1333333;  // this number means 100ms
+    while(i > 0){
+      i = i - 1;
+    }
+    time = time - 1; // decrements every 100 ms
   }
 }
