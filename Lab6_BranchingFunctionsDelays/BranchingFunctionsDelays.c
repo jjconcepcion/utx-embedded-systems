@@ -46,7 +46,16 @@ int main(void){ unsigned long volatile delay;
 	GPIO_PORTF_DATA_R |= 0x04;            // Set PF2 bit so the LED is initially ON
   EnableInterrupts();           // enable interrupts for the grader
   while(1){
-    // body goes here
+    Delay100ms(1);
+    if (!(GPIO_PORTF_DATA_R & 0x10)) { // Toggle LED if switch pressed
+      if (GPIO_PORTF_DATA_R & 0x04) {
+        GPIO_PORTF_DATA_R &= ~(0x04);
+      } else {
+        GPIO_PORTF_DATA_R |= 0x04;
+      }
+    } else {                           // LED ON
+      GPIO_PORTF_DATA_R |= 0x04;
+    }
   }
 }
 
