@@ -32,7 +32,16 @@ void EnableInterrupts(void);  // Enable interrupts
 int main(void){ unsigned long volatile delay;
   TExaS_Init(SW_PIN_PF4, LED_PIN_PF2);  // activate grader and set system clock to 80 MHz
   // initialization goes here
-
+  SYSCTL_RCGC2_R |= 0x20;               // Turn on the clock for Port F
+  delay = SYSCTL_RCGC2_R;               // Allow time for clock to start
+  GPIO_PORTF_AMSEL_R &= ~(0x14);        // Disable analog
+  GPIO_PORTF_PCTL_R &= ~(0x14);         // Configure as GPIO
+  GPIO_PORTF_DIR_R &= ~(0x10);          // Set PF4 as an input
+  GPIO_PORTF_DIR_R |= 0x04;             // Set PF2 as an output
+  GPIO_PORTF_AFSEL_R &= ~(0x14);        // Disable alternate functions
+  GPIO_PORTF_DEN_R |= 0x14;             // Enable digital
+  GPIO_PORTF_PUR_R |= 0x10;             // Activate an internal pullup resistor for PF4
+	GPIO_PORTF_DATA_R |= 0x04;            // Set PF2 bit so the LED is initially ON
   EnableInterrupts();           // enable interrupts for the grader
   while(1){
     // body goes here
