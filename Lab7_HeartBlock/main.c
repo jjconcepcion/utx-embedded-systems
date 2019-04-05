@@ -58,7 +58,7 @@ int main(void){
   while(1){          // Follows the nine steps list above
     SetReady();      // a) Ready signal goes high
     // b) wait for switch to be pressed
-    // c) Ready signal goes low
+    ClearReady();    // c) Ready signal goes low
     // d) wait 10ms
     // e) wait for switch to be released
     // f) wait 250ms
@@ -143,6 +143,7 @@ void SetReady(void){
 // Notes:   friendly means it does not affect other bits in the port
 void ClearReady(void){
 // write this function
+  GPIO_PORTF_DATA_R &= ~0x08;
 }
 
 // Subroutine to delay in units of milliseconds
