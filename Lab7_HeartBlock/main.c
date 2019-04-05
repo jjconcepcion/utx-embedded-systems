@@ -62,7 +62,7 @@ int main(void){
     // d) wait 10ms
     // e) wait for switch to be released
     // f) wait 250ms
-    // g) VT signal goes high
+    SetVT();         // g) VT signal goes high
     // h) wait 250ms
     // i) VT signal goes low
   }
@@ -117,6 +117,7 @@ void WaitForASHigh(void){
 // Notes:   friendly means it does not affect other bits in the port
 void SetVT(void){
 // write this function
+  GPIO_PORTF_DATA_R |= 0x02;
 }
 
 // Subroutine clears VT low
