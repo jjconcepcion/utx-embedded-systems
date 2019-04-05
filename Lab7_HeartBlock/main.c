@@ -64,7 +64,7 @@ int main(void){
     // f) wait 250ms
     SetVT();         // g) VT signal goes high
     // h) wait 250ms
-    // i) VT signal goes low
+    ClearVT();       // i) VT signal goes low
   }
 }
 // Subroutine to initialize port F pins for input and output
@@ -126,6 +126,7 @@ void SetVT(void){
 // Notes:   friendly means it does not affect other bits in the port
 void ClearVT(void){
 // write this function
+  GPIO_PORTF_DATA_R &= ~0x02;
 }
 
 // Subroutine sets Ready high
