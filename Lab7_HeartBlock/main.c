@@ -56,7 +56,7 @@ int main(void){
   PortF_Init();                            // Init port PF4 PF3 PF1    
   EnableInterrupts();                      // enable interrupts for the grader  
   while(1){          // Follows the nine steps list above
-    // a) Ready signal goes high
+    SetReady();      // a) Ready signal goes high
     // b) wait for switch to be pressed
     // c) Ready signal goes low
     // d) wait 10ms
@@ -133,6 +133,7 @@ void ClearVT(void){
 // Notes:   friendly means it does not affect other bits in the port
 void SetReady(void){
 // write this function
+  GPIO_PORTF_DATA_R |= 0x08;
 }
 
 
