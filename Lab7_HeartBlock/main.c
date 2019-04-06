@@ -38,7 +38,7 @@
 #define PF4                     (*((volatile unsigned long *)0x40025040))
 #define PF3                     (*((volatile unsigned long *)0x40025020))
 #define PF1                     (*((volatile unsigned long *)0x40025008))
-#define NUM_ITER_PER_MSEC       16000
+#define NUM_ITER_PER_MSEC       16000*25/30
 // 2. Declarations Section
 //   Global Variables
 
