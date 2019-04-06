@@ -35,6 +35,7 @@
 #define GPIO_PORTF_AMSEL_R      (*((volatile unsigned long *)0x40025528))
 #define GPIO_PORTF_PCTL_R       (*((volatile unsigned long *)0x4002552C))
 #define SYSCTL_RCGC2_R          (*((volatile unsigned long *)0x400FE108))
+#define PF4                     (*((volatile unsigned long *)0x40025040))
 #define PF3                     (*((volatile unsigned long *)0x40025020))
 #define PF1                     (*((volatile unsigned long *)0x40025008))
 #define NUM_ITER_PER_MSEC       16000
