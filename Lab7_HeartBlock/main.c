@@ -64,7 +64,7 @@ int main(void){
     WaitForASLow();  // b) wait for switch to be pressed
     ClearReady();    // c) Ready signal goes low
     Delay1ms(10);    // d) wait 10ms
-    // e) wait for switch to be released
+    WaitForASHigh(); // e) wait for switch to be released
     Delay1ms(250);   // f) wait 250ms
     SetVT();         // g) VT signal goes high
     Delay1ms(250);   // h) wait 250ms
@@ -114,6 +114,7 @@ void WaitForASLow(void){
 // Outputs: None
 void WaitForASHigh(void){
 // write this function
+  while (!PF4) {};
 }
 
 // Subroutine sets VT high
