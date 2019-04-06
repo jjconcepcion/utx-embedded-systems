@@ -36,7 +36,7 @@
 #define GPIO_PORTF_PCTL_R       (*((volatile unsigned long *)0x4002552C))
 #define SYSCTL_RCGC2_R          (*((volatile unsigned long *)0x400FE108))
 #define PF3                     (*((volatile unsigned long *)0x40025020))
-
+#define PF1                     (*((volatile unsigned long *)0x40025008))
 // 2. Declarations Section
 //   Global Variables
 
@@ -119,7 +119,7 @@ void WaitForASHigh(void){
 // Notes:   friendly means it does not affect other bits in the port
 void SetVT(void){
 // write this function
-  GPIO_PORTF_DATA_R |= 0x02;
+  PF1 = 0x02;
 }
 
 // Subroutine clears VT low
@@ -128,7 +128,7 @@ void SetVT(void){
 // Notes:   friendly means it does not affect other bits in the port
 void ClearVT(void){
 // write this function
-  GPIO_PORTF_DATA_R &= ~0x02;
+  PF1 = 0;
 }
 
 // Subroutine sets Ready high
