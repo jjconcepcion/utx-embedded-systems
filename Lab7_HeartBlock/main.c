@@ -37,6 +37,7 @@
 #define SYSCTL_RCGC2_R          (*((volatile unsigned long *)0x400FE108))
 #define PF3                     (*((volatile unsigned long *)0x40025020))
 #define PF1                     (*((volatile unsigned long *)0x40025008))
+#define NUM_ITER_PER_MSEC       16000
 // 2. Declarations Section
 //   Global Variables
 
@@ -61,11 +62,11 @@ int main(void){
     SetReady();      // a) Ready signal goes high
     // b) wait for switch to be pressed
     ClearReady();    // c) Ready signal goes low
-    // d) wait 10ms
+    Delay1ms(10);    // d) wait 10ms
     // e) wait for switch to be released
-    // f) wait 250ms
+    Delay1ms(250);   // f) wait 250ms
     SetVT();         // g) VT signal goes high
-    // h) wait 250ms
+    Delay1ms(250);   // h) wait 250ms
     ClearVT();       // i) VT signal goes low
   }
 }
@@ -156,6 +157,13 @@ void ClearReady(void){
 // Notes:   assumes 80 MHz clock
 void Delay1ms(unsigned long msec){
 // write this function
-
+  unsigned long i;
+  while (msec > 0) {
+    i = NUM_ITER_PER_MSEC;
+    while (i > 0) {
+      i -= 1;
+    }
+    msec -= 1;
+  }
 }
 
