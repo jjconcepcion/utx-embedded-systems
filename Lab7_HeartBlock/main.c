@@ -61,7 +61,7 @@ int main(void){
   EnableInterrupts();                      // enable interrupts for the grader  
   while(1){          // Follows the nine steps list above
     SetReady();      // a) Ready signal goes high
-    // b) wait for switch to be pressed
+    WaitForASLow();  // b) wait for switch to be pressed
     ClearReady();    // c) Ready signal goes low
     Delay1ms(10);    // d) wait 10ms
     // e) wait for switch to be released
@@ -104,6 +104,7 @@ void PortF_Init(void){ volatile unsigned long delay;
 // Outputs: None
 void WaitForASLow(void){
 // write this function
+  while (PF4) {};
 }
 
 // Subroutine reads AS input and waits for signal to be high
