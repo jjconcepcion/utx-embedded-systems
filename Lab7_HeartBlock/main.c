@@ -35,6 +35,8 @@
 #define GPIO_PORTF_AMSEL_R      (*((volatile unsigned long *)0x40025528))
 #define GPIO_PORTF_PCTL_R       (*((volatile unsigned long *)0x4002552C))
 #define SYSCTL_RCGC2_R          (*((volatile unsigned long *)0x400FE108))
+#define PF3                     (*((volatile unsigned long *)0x40025020))
+
 // 2. Declarations Section
 //   Global Variables
 
@@ -135,7 +137,7 @@ void ClearVT(void){
 // Notes:   friendly means it does not affect other bits in the port
 void SetReady(void){
 // write this function
-  GPIO_PORTF_DATA_R |= 0x08;
+  PF3 = 0x08;
 }
 
 
@@ -145,7 +147,7 @@ void SetReady(void){
 // Notes:   friendly means it does not affect other bits in the port
 void ClearReady(void){
 // write this function
-  GPIO_PORTF_DATA_R &= ~0x08;
+  PF3 = 0;
 }
 
 // Subroutine to delay in units of milliseconds
