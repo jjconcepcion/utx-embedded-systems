@@ -66,4 +66,5 @@ void PortE_Init(void) {
   GPIO_PORTE_DIR_R &= ~0x01;              // PE0 input
   GPIO_PORTE_DIR_R |= 0x02;               // PE1 output
   GPIO_PORTE_DEN_R |= 0x03;               // Enable digital
+  LED = 0x02;                             // Initialize LED ON
 }
