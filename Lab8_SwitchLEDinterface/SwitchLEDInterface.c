@@ -46,9 +46,12 @@ int main(void){
   PortE_Init();
   EnableInterrupts();           // enable interrupts for the grader
   while(1){
-    
+    if (SW) {                   // toggle LED if switch pressed, else turn LED on
+      LED ^= 0x02;
+    } else {
+      LED = 0x02;
+    }
   }
-  
 }
 
 // Subroutine to initialize Port E:
