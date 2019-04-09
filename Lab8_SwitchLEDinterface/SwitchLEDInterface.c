@@ -30,6 +30,7 @@
 void DisableInterrupts(void); // Disable interrupts
 void EnableInterrupts(void);  // Enable interrupts
 void PortE_Init(void);
+void Delay100ms(unsigned long);
 
 // ***** 3. Subroutines Section *****
 
@@ -70,4 +71,18 @@ void PortE_Init(void) {
   GPIO_PORTE_DIR_R |= 0x02;               // PE1 output
   GPIO_PORTE_DEN_R |= 0x03;               // Enable digital
   LED = 0x02;                             // Initialize LED ON
+}
+
+// Subroutine to cause system to wait 100 milliseconds
+// Inputs: time - number of 100ms periods to wait
+// Outputs: None
+void Delay100ms(unsigned long time){
+  unsigned long i;
+  while(time > 0){
+    i = 1333333;  // this number means 100ms
+    while(i > 0){
+      i = i - 1;
+    }
+    time = time - 1; // decrements every 100 ms
+  }
 }
