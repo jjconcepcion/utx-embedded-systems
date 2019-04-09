@@ -11,6 +11,16 @@
 // ***** 1. Pre-processor Directives Section *****
 #include "TExaS.h"
 
+// Register Definitions
+#define GPIO_PORTE_DATA_R       (*((volatile unsigned long *)0x400243FC))
+#define GPIO_PORTE_DIR_R        (*((volatile unsigned long *)0x40024400))
+#define GPIO_PORTE_AFSEL_R      (*((volatile unsigned long *)0x40024420))
+#define GPIO_PORTE_DEN_R        (*((volatile unsigned long *)0x4002451C))
+#define GPIO_PORTE_AMSEL_R      (*((volatile unsigned long *)0x40024528))
+#define GPIO_PORTE_PCTL_R       (*((volatile unsigned long *)0x4002452C))
+#define SYSCTL_RCGC2_R          (*((volatile unsigned long *)0x400FE108))
+#define SYSCTL_RCGC2_GPIOE      0x00000010  // port E Clock Gating Control
+
 // ***** 2. Global Declarations Section *****
 
 // FUNCTION PROTOTYPES: Each subroutine defined
