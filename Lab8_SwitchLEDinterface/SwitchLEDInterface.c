@@ -26,6 +26,7 @@
 // FUNCTION PROTOTYPES: Each subroutine defined
 void DisableInterrupts(void); // Disable interrupts
 void EnableInterrupts(void);  // Enable interrupts
+void PortE_Init(void);
 
 // ***** 3. Subroutines Section *****
 
@@ -39,11 +40,27 @@ int main(void){
 // The following version tests input on PE0 and output on PE1
 //**********************************************************************
   TExaS_Init(SW_PIN_PE0, LED_PIN_PE1, ScopeOn);  // activate grader and set system clock to 80 MHz
-  
-  
+  PortE_Init();
   EnableInterrupts();           // enable interrupts for the grader
   while(1){
     
   }
   
+}
+
+// Subroutine to initialize Port E:
+// PE0 pin as input, and PE1 pin as output
+// Inputs: None
+// Outputs: None
+void PortE_Init(void) {
+  unsigned long volatile delay;
+
+  SYSCTL_RCGC2_R |= SYSCTL_RCGC2_GPIOE;   // Turn on clock for Port E
+  delay = SYSCTL_RCGC2_R;                 // Allow time for clock to start
+  GPIO_PORTE_AMSEL_R &= ~0x03;            // Disable analog mode
+  GPIO_PORTE_AFSEL_R &= ~0x03;            // No alternate function
+  GPIO_PORTE_PCTL_R &= ~0x03;             // Configure as GPIO
+  GPIO_PORTE_DIR_R &= ~0x01;              // PE0 input
+  GPIO_PORTE_DIR_R |= 0x02;               // PE1 output
+  GPIO_PORTE_DEN_R |= 0x03;               // Enable digital
 }
