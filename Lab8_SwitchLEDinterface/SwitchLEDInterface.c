@@ -49,6 +49,7 @@ int main(void){
   while(1){
     if (SW) {                   // toggle LED if switch pressed, else turn LED on
       LED ^= 0x02;
+      Delay100ms(1);
     } else {
       LED = 0x02;
     }
