@@ -20,6 +20,9 @@
 #define GPIO_PORTE_PCTL_R       (*((volatile unsigned long *)0x4002452C))
 #define SYSCTL_RCGC2_R          (*((volatile unsigned long *)0x400FE108))
 #define SYSCTL_RCGC2_GPIOE      0x00000010  // port E Clock Gating Control
+// Bit-specific Addresses
+#define LED                     (*((volatile unsigned long *)0x40024008))
+#define SW                      (*((volatile unsigned long *)0x40024004))
 
 // ***** 2. Global Declarations Section *****
 
