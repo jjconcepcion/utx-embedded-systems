@@ -75,6 +75,7 @@ void Delay(void){unsigned long volatile time;
 unsigned long Time[50];
 // you must leave the Data array defined exactly as it is
 unsigned long Data[50];
+unsigned long Switch1, Switch2;
 int main(void){  unsigned long i,last,now;
   TExaS_Init(SW_PIN_PF40, LED_PIN_PF1);  // activate grader and set system clock to 16 MHz
   PortF_Init();   // initialize PF1 to output
@@ -83,17 +84,24 @@ int main(void){  unsigned long i,last,now;
   last = NVIC_ST_CURRENT_R;
   EnableInterrupts();           // enable interrupts for the grader
   while(1){
-    Led = GPIO_PORTF_DATA_R;   // read previous
-    Led = Led^0x02;            // toggle red LED
-    GPIO_PORTF_DATA_R = Led;   // output 
-    if(i<50){
-      now = NVIC_ST_CURRENT_R;
-      Time[i] = (last-now)&0x00FFFFFF;  // 24-bit time difference
-      Data[i] = GPIO_PORTF_DATA_R&0x02; // record PF1
-      last = now;
-      i++;
+    Switch1 = !(GPIO_PORTF_DATA_R&0x10);   // is PF4 switch pressed
+    Switch2 = !(GPIO_PORTF_DATA_R&0x01);   // is PF0 switch pressed
+    if(Switch1 || Switch2) {
+      Led = GPIO_PORTF_DATA_R;   // read previous
+      Led = Led^0x02;            // toggle red LED
+      GPIO_PORTF_DATA_R = Led;   // output 
+      if(i<50){
+        now = NVIC_ST_CURRENT_R;
+        Time[i] = (last-now)&0x00FFFFFF;  // 24-bit time difference
+        Data[i] = GPIO_PORTF_DATA_R&0x02; // record PF1
+        last = now;
+        i++;
+      }
+      Delay();
+    } else {
+      Led = Led&~0x02;          // turn off red LED
+      GPIO_PORTF_DATA_R = Led;
     }
-    Delay();
   }
 }
 
