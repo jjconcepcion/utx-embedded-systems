@@ -11,6 +11,7 @@
 // ***** 1. Pre-processor Directives Section *****
 #include "TExaS.h"
 #include "tm4c123gh6pm.h"
+#include <stdint.h>
 
 // ***** 2. Global Declarations Section *****
 
