@@ -93,7 +93,7 @@ int main(void){  unsigned long i,last,now;
       if(i<50){
         now = NVIC_ST_CURRENT_R;
         Time[i] = (last-now)&0x00FFFFFF;  // 24-bit time difference
-        Data[i] = GPIO_PORTF_DATA_R&0x02; // record PF1
+        Data[i] = GPIO_PORTF_DATA_R&0x13; // record PF4, PF1, PF0
         last = now;
         i++;
       }
