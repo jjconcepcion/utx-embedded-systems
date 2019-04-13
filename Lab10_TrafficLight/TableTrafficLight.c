@@ -30,6 +30,7 @@ void EnableInterrupts(void);  // Enable interrupts
 void Ports_Init(void);
 void SysTick_Init(void);
 void SysTick_Wait(unsigned long);
+void Wait250ms(unsigned long);
 
 // ***** 3. Subroutines Section *****
 
@@ -86,5 +87,18 @@ void SysTick_Wait(unsigned long delay) {
   NVIC_ST_RELOAD_R = 0x00FFFFFF&(delay-1);
   NVIC_ST_CURRENT_R = 0;                      //  reload current
   while ((NVIC_ST_CTRL_R&0x00010000) == 0) {  // check COUNT flag
+  }
+}
+
+// Wrapper subroutine to SysTick_Wait() to execute a 250ms wait
+// Inputs: ntimes, number of wait iterations
+// Outputs: None
+void Wait250ms(unsigned long ntimes) {
+  unsigned long i;
+  for (i = 0; i < ntimes; i++) {
+    // Given that at 80 Mhz, maximum SysTick counter allows a little over than 200ms wait
+    // perform a 200ms and 50ms wait respectively
+    SysTick_Wait(16000000);
+    SysTick_Wait( 4000000);
   }
 }
