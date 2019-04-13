@@ -28,13 +28,14 @@
 void DisableInterrupts(void); // Disable interrupts
 void EnableInterrupts(void);  // Enable interrupts
 void Ports_Init(void);
+void SysTick_Init(void);
 
 // ***** 3. Subroutines Section *****
 
 int main(void){ 
   TExaS_Init(SW_PIN_PE210, LED_PIN_PB543210,ScopeOff); // activate grader and set system clock to 80 MHz
   Ports_Init();
-  
+  SysTick_Init();
   EnableInterrupts();
   while(1){
   }
@@ -67,3 +68,12 @@ void Ports_Init(void) {
   GPIO_PORTF_DEN_R |= 0x0A;           // enable digital PF3, PF1
 }
 
+// Subroutine to configure SysTick system timer
+// Inputs: None
+// Outputs: None
+void SysTick_Init(void) {
+  NVIC_ST_CTRL_R = 0;             // disable during setup
+  NVIC_ST_RELOAD_R = 0x00FFFFFF;  // max reload value
+  NVIC_ST_CURRENT_R = 0;          // writing any value to clear
+  NVIC_ST_CTRL_R = 0x00000005;    // enable with core clock
+}
