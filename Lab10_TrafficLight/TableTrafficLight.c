@@ -29,6 +29,7 @@ void DisableInterrupts(void); // Disable interrupts
 void EnableInterrupts(void);  // Enable interrupts
 void Ports_Init(void);
 void SysTick_Init(void);
+void SysTick_Wait(unsigned long);
 
 // ***** 3. Subroutines Section *****
 
@@ -76,4 +77,14 @@ void SysTick_Init(void) {
   NVIC_ST_RELOAD_R = 0x00FFFFFF;  // max reload value
   NVIC_ST_CURRENT_R = 0;          // writing any value to clear
   NVIC_ST_CTRL_R = 0x00000005;    // enable with core clock
+}
+
+// Subroutine to perform busy waiting
+// Inputs: delay, unsigned 24-bit integer SysTick counter value
+// Outputs: None
+void SysTick_Wait(unsigned long delay) {
+  NVIC_ST_RELOAD_R = 0x00FFFFFF&(delay-1);
+  NVIC_ST_CURRENT_R = 0;                      //  reload current
+  while ((NVIC_ST_CTRL_R&0x00010000) == 0) {  // check COUNT flag
+  }
 }
