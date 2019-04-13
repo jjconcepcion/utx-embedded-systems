@@ -20,22 +20,50 @@
 // ***** 1. Pre-processor Directives Section *****
 #include "TExaS.h"
 #include "tm4c123gh6pm.h"
+#include <stdint.h>
 
 // ***** 2. Global Declarations Section *****
 
 // FUNCTION PROTOTYPES: Each subroutine defined
 void DisableInterrupts(void); // Disable interrupts
 void EnableInterrupts(void);  // Enable interrupts
+void Ports_Init(void);
 
 // ***** 3. Subroutines Section *****
 
 int main(void){ 
   TExaS_Init(SW_PIN_PE210, LED_PIN_PB543210,ScopeOff); // activate grader and set system clock to 80 MHz
- 
+  Ports_Init();
   
   EnableInterrupts();
   while(1){
-     
   }
+}
+
+// Subroutine to configure PB5-0, PF3,F1 as output pins, and PE2-0 as input pins
+// Inputs: None
+// Outputs: None
+void Ports_Init(void) {
+  volatile long delay;
+  SYSCTL_RCGC2_R |= 0x32;             // activate clock for Ports B,E,F
+  delay = SYSCTL_RCGC2_R;             // wait for clock
+  GPIO_PORTB_CR_R |= 0x3F;            // allow writes to PB5-0
+  GPIO_PORTB_AMSEL_R &= ~0x3F;        // disable analog PB5-0
+  GPIO_PORTB_AFSEL_R &= ~0x3F;        // regular function PB5-0
+  GPIO_PORTB_PCTL_R &= ~0x00FFFFFF;   // GPIO
+  GPIO_PORTB_DIR_R |= 0x3F;           // outputs on PB5-0
+  GPIO_PORTB_DEN_R |= 0x3F;           // enable digital PB5-0
+  GPIO_PORTE_CR_R |= 0x07;            // allow writes to PE2-0
+  GPIO_PORTE_AMSEL_R &= ~0x07;        // disable analog PE2-0
+  GPIO_PORTE_AFSEL_R &= ~0x07;        // regular function PE2-0
+  GPIO_PORTE_PCTL_R &= ~0x00000FFF;   // GPIO
+  GPIO_PORTE_DIR_R |= 0x07;           // inputs on PE2-0
+  GPIO_PORTE_DEN_R |= 0x07;           // enable digital PE2-0
+  GPIO_PORTF_CR_R |= 0x0A;            // allow writes to PF3, PF1
+  GPIO_PORTF_AMSEL_R &= ~0x0A;        // disable analog PF3, PF1
+  GPIO_PORTF_AFSEL_R &= ~0x0A;        // regular function PF3, PF1
+  GPIO_PORTF_PCTL_R &= ~0x0000F0F0;   // GPIO
+  GPIO_PORTF_DIR_R |= 0x0A;           // inputs on PF3, PF1
+  GPIO_PORTF_DEN_R |= 0x0A;           // enable digital PF3, PF1
 }
 
