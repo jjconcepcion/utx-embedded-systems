@@ -127,13 +127,20 @@ void SysTick_Wait(unsigned long);
 void Wait250ms(unsigned long);
 
 // ***** 3. Subroutines Section *****
-
+unsigned long state;
+unsigned long input;
 int main(void){ 
   TExaS_Init(SW_PIN_PE210, LED_PIN_PB543210,ScopeOff); // activate grader and set system clock to 80 MHz
   Ports_Init();
   SysTick_Init();
   EnableInterrupts();
+  state = GO_E_W;   // initial state;
   while(1){
+    GPIO_PORTB_DATA_R = FSM[state].Lights_Traf;       // set traffic light LEDs
+    GPIO_PORTF_DATA_R = FSM[state].Lights_Ped;        // set walk LEDs
+    Wait250ms( FSM[state].Time );
+    input = GPIO_PORTE_DATA_R & 0x7;                  // read sensors
+    state = FSM[state].Next[input];
   }
 }
 
