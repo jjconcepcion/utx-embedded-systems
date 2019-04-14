@@ -154,7 +154,7 @@ void Ports_Init(void) {
   GPIO_PORTE_AMSEL_R &= ~0x07;        // disable analog PE2-0
   GPIO_PORTE_AFSEL_R &= ~0x07;        // regular function PE2-0
   GPIO_PORTE_PCTL_R &= ~0x00000FFF;   // GPIO
-  GPIO_PORTE_DIR_R |= 0x07;           // inputs on PE2-0
+  GPIO_PORTE_DIR_R &= ~0x07;          // inputs on PE2-0
   GPIO_PORTE_DEN_R |= 0x07;           // enable digital PE2-0
   GPIO_PORTF_CR_R |= 0x0A;            // allow writes to PF3, PF1
   GPIO_PORTF_AMSEL_R &= ~0x0A;        // disable analog PF3, PF1
