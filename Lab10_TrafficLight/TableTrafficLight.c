@@ -34,6 +34,15 @@
 
 // ***** 2. Global Declarations Section *****
 
+struct Traffic_Cntrl_St {
+  unsigned long Lights_Traf;
+  unsigned long Lights_Ped;
+  unsigned long Time;
+  unsigned long Next[8];
+};
+
+typedef const struct Traffic_Cntrl_St TC_State;
+
 // FUNCTION PROTOTYPES: Each subroutine defined
 void DisableInterrupts(void); // Disable interrupts
 void EnableInterrupts(void);  // Enable interrupts
