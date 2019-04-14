@@ -22,6 +22,16 @@
 #include "tm4c123gh6pm.h"
 #include <stdint.h>
 
+#define GO_E_W      0
+#define SLOW_E_W    1
+#define GO_N_S      2
+#define SLOW_N_S    3
+#define WALK        4
+#define HURRY1      5
+#define HURRY2      6
+#define HURRY3      7
+#define HURRY4      8
+
 // ***** 2. Global Declarations Section *****
 
 // FUNCTION PROTOTYPES: Each subroutine defined
