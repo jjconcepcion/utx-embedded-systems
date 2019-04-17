@@ -143,6 +143,7 @@ unsigned char String[10];
 //10000 to "**** "  any value larger than 9999 converted to "**** "
 void UART_ConvertUDec(unsigned long n){
   char pos, ch;
+  char is_padding;    // flag for leading spaces
   // output string terminators: space + null
   String[5] = '\0';
   String[4] = SP;
@@ -160,7 +161,8 @@ void UART_ConvertUDec(unsigned long n){
   while (pos >= 0) {
     ch = (n % 10) + '0';
     n /= 10;
-    String[pos] = (ch == '0') ? SP : ch;    // store fixed width space-padded digits
+    is_padding = (ch == '0' && n == 0 && pos < 3);  // sets flag if ch is a leading zero
+    String[pos] = is_padding ? SP : ch;             // store fixed width space-padded digits
     pos--;
   }
 }
