@@ -160,7 +160,7 @@ void UART_ConvertUDec(unsigned long n){
   while (pos >= 0) {
     ch = (n % 10) + '0';
     n /= 10;
-    String[pos] = ch;
+    String[pos] = (ch == '0') ? SP : ch;    // store fixed width space-padded digits
     pos--;
   }
 }
