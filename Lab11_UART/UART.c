@@ -184,8 +184,34 @@ void UART_OutUDec(unsigned long n){
 // 2210 to "2.210 cm"
 //10000 to "*.*** cm"  any value larger than 9999 converted to "*.*** cm"
 void UART_ConvertDistance(unsigned long n){
-// as part of Lab 11 implement this function
-  
+  char pos, ch;
+  // output string terminators: space + "cm" + null
+  String[8] = '\0';
+  String[7] = 'm';
+  String[6] = 'c';
+  String[5] = SP;
+  String[1] = '.';      // decimal point
+  // generate output string for invalid numbers
+  if (n > 9999) {
+    String[4] = '*';
+    String[3] = '*';
+    String[2] = '*';
+    String[0] = '*';
+    return;
+  }
+  // for numbers 0-9999
+  // perform decimal to ascii conversion beginning from the least significant digit
+  pos = 3;
+  while (pos >= 0) {
+    if (pos == 1) {     // skip decimal point position
+      pos--;
+      continue;
+    }
+    ch = (n % 10) + '0';
+    n /= 10;
+    String[pos] = ch;
+    pos--;
+  }
 }
 
 //-----------------------UART_OutDistance-----------------------
