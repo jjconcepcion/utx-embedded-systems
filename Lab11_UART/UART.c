@@ -139,8 +139,27 @@ unsigned char String[10];
 // 2210 to "2210 "
 //10000 to "**** "  any value larger than 9999 converted to "**** "
 void UART_ConvertUDec(unsigned long n){
-// as part of Lab 11 implement this function
-  
+  char pos, ch;
+  // output string terminators: space + null
+  String[5] = '\0';
+  String[4] = SP;
+  // generate output string for invalid numbers
+  if (n > 9999) {
+    String[3] = '*';
+    String[2] = '*';
+    String[1] = '*';
+    String[0] = '*';
+    return;
+  }
+  // for numbers 0-9999
+  // perform decimal to ascii conversion beginning from the least significant digit
+  pos = 3;
+  while (pos >= 0) {
+    ch = (n % 10) + '0';
+    n /= 10;
+    String[pos] = ch;
+    pos--;
+  }
 }
 
 //-----------------------UART_OutUDec-----------------------
