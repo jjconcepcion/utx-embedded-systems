@@ -122,8 +122,11 @@ char character;
 // Input: pointer to a NULL-terminated string to be transferred
 // Output: none
 void UART_OutString(unsigned char buffer[]){
-// as part of Lab 11 implement this function
-
+  unsigned char *ch = buffer;
+  while (*ch != '\0') {
+    UART_OutChar(*ch);
+    ch++;
+  }
 }
 
 unsigned char String[10];
