@@ -204,7 +204,7 @@ void UART_ConvertDistance(unsigned long n){
   }
   // for numbers 0-9999
   // perform decimal to ascii conversion beginning from the least significant digit
-  pos = 3;
+  pos = 4;
   while (pos >= 0) {
     if (pos == 1) {     // skip decimal point position
       pos--;
