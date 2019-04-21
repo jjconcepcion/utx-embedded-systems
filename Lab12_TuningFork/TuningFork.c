@@ -35,6 +35,7 @@
 
 #include "TExaS.h"
 #include "tm4c123gh6pm.h"
+#include <stdint.h>
 
 
 // basic functions defined at end of startup.s
@@ -44,7 +45,15 @@ void WaitForInterrupt(void);  // low power mode
 
 // input from PA3, output from PA2, SysTick interrupts
 void Sound_Init(void){ 
-
+  unsigned long volatile delay;
+  SYSCTL_RCGC2_R |= SYSCTL_RCGC2_GPIOA;   // enable clock
+  delay = SYSCTL_RCGC2_R;
+  GPIO_PORTA_DIR_R &= ~0x08;              // set PA3 input
+  GPIO_PORTA_DIR_R |= 0x04;               // set PA2 output
+  GPIO_PORTA_AFSEL_R &= ~0x0C;            // disable alternate function
+  GPIO_PORTA_DR8R_R |= 0x04;              // set 8mA drive stregnth for PA2
+  GPIO_PORTA_PDR_R |= 0x08;               // enable pull-down resistor for PA3
+  GPIO_PORTA_DEN_R |= 0x0C;              // enable digital I/O
 }
 
 // called at 880 Hz
