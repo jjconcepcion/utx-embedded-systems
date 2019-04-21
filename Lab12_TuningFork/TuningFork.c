@@ -37,6 +37,10 @@
 #include "tm4c123gh6pm.h"
 #include <stdint.h>
 
+// defines for the bit fields of I/O devices
+#define SWITCH                (*((volatile unsigned long *)0x40004020))
+#define SOUND                 (*((volatile unsigned long *)0x40004010))
+
 // basic functions defined at end of startup.s
 void DisableInterrupts(void); // Disable interrupts
 void EnableInterrupts(void);  // Enable interrupts
@@ -69,6 +73,7 @@ int main(void){// activate grader and set system clock to 80 MHz
   Sound_Init();         
   EnableInterrupts();   // enable after all initialization are done
   while(1){
+
     // main program is free to perform other tasks
     // do not use WaitForInterrupt() here, it may cause the TExaS to crash
   }
