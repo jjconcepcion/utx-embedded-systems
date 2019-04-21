@@ -37,7 +37,6 @@
 #include "tm4c123gh6pm.h"
 #include <stdint.h>
 
-
 // basic functions defined at end of startup.s
 void DisableInterrupts(void); // Disable interrupts
 void EnableInterrupts(void);  // Enable interrupts
@@ -53,10 +52,14 @@ void Sound_Init(void){
   GPIO_PORTA_AFSEL_R &= ~0x0C;            // disable alternate function
   GPIO_PORTA_DR8R_R |= 0x04;              // set 8mA drive stregnth for PA2
   GPIO_PORTA_PDR_R |= 0x08;               // enable pull-down resistor for PA3
-  GPIO_PORTA_DEN_R |= 0x0C;              // enable digital I/O
+  GPIO_PORTA_DEN_R |= 0x0C;               // enable digital I/O
+  NVIC_ST_CTRL_R &= ~NVIC_ST_CTRL_ENABLE; // disable SysTick during setup
+  NVIC_ST_RELOAD_R  = 90908;  // reload = int((1/(freq_interrupt*freq_bus))-1)
+  NVIC_ST_CURRENT_R = 0;                  // write any value to clear current
+  NVIC_ST_CTRL_R  = 0x07;     // enable system clk src, interrupts, systick
 }
 
-// called at 880 Hz
+// called at 880 Hz1/()
 void SysTick_Handler(void){
 
 }
