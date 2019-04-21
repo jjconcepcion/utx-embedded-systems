@@ -41,6 +41,13 @@
 #define SWITCH                (*((volatile unsigned long *)0x40004020))
 #define SOUND                 (*((volatile unsigned long *)0x40004010))
 
+#define PRESSED               0x08
+#define NOT_PRESSED           0
+#define TOGGLE                1
+#define QUIET                 0
+static volatile unsigned long prev_sw;
+static volatile unsigned long state;
+
 // basic functions defined at end of startup.s
 void DisableInterrupts(void); // Disable interrupts
 void EnableInterrupts(void);  // Enable interrupts
@@ -71,6 +78,8 @@ void SysTick_Handler(void){
 int main(void){// activate grader and set system clock to 80 MHz
   TExaS_Init(SW_PIN_PA3, HEADPHONE_PIN_PA2,ScopeOn); 
   Sound_Init();         
+  prev_sw = NOT_PRESSED;
+  state = QUIET;
   EnableInterrupts();   // enable after all initialization are done
   while(1){
 
