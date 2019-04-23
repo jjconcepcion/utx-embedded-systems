@@ -41,13 +41,44 @@
 #define SWITCH                (*((volatile unsigned long *)0x40004020))
 #define SOUND                 (*((volatile unsigned long *)0x40004010))
 
-#define PRESSED               0x08
-#define NOT_PRESSED           0
-#define TOGGLE                1
+// state names
 #define QUIET                 0
+#define SWITCH_DOWN           1
+#define SWITCH_UP             2
+// sound mode
+#define TOGGLE                1
+// SWITCH low value
+#define NOT_PRESSED           0
+// SOUND output values
+#define SOUND_ON              0x4
+#define SOUND_OFF             0
+
+// global declarations section
 static volatile unsigned long prev_sw;
 static volatile unsigned long state;
-static volatile unsigned long num_presses;
+static volatile unsigned long input;
+
+struct Sound_State {
+  unsigned long Mode;
+  unsigned long Next[4];
+};
+
+typedef const struct Sound_State S_State;
+
+//                             |-------input-------|
+// | # | State       | Mode    | 00 | 01 | 10 | 11 |
+// |===============================================|
+// | 0 | QUIET       | OFF     |  0 |  1 |  0 |  0 |
+// | 1 | SWITCH_DOWN | TOGGLE  |  2 |  1 |  2 |  1 |
+// | 2 | SWITCH_UP   | TOGGLE  |  2 |  0 |  2 |  0 |
+//  
+// note: input_bit1 = logical value of previous switch value
+//       input_bit0 = logical value of current switch value
+S_State FSM[3] = {
+  {SOUND_OFF, {QUIET, SWITCH_DOWN, QUIET, QUIET}},
+  {TOGGLE, {SWITCH_UP, SWITCH_DOWN, SWITCH_UP, SWITCH_DOWN}},
+  {TOGGLE, {SWITCH_UP, QUIET, SWITCH_UP, QUIET}}
+};
 
 // basic functions defined at end of startup.s
 void DisableInterrupts(void); // Disable interrupts
@@ -71,21 +102,14 @@ void Sound_Init(void){
   NVIC_ST_CTRL_R  = 0x07;     // enable system clk src, interrupts, systick
 }
 
-// called at 880 Hz1/()
+// called at 880 Hz()
+// generates continous 440hz tone on intial switch press which is terminated
+// by a following switch press
 void SysTick_Handler(void){
-  if (num_presses == 0 && prev_sw == NOT_PRESSED && SWITCH == PRESSED)
-    state = TOGGLE;
-  else if (num_presses == 0 && prev_sw == PRESSED && SWITCH == NOT_PRESSED)
-    num_presses = 1;
-  else if (num_presses == 1 && prev_sw == NOT_PRESSED && SWITCH == PRESSED)
-    state = QUIET;
-  else if (num_presses == 1 && prev_sw == PRESSED && SWITCH == NOT_PRESSED)
-    num_presses = 0;
+  input = prev_sw >> 2 | SWITCH >> 3;
+  state = FSM[state].Next[input];
+  SOUND = (FSM[state].Mode == TOGGLE) ? SOUND^SOUND_ON : SOUND_OFF;
   prev_sw = SWITCH;
-  if (state == TOGGLE)
-    SOUND ^= 0x04;
-  else
-    SOUND = 0;
 }
 
 int main(void){// activate grader and set system clock to 80 MHz
@@ -93,10 +117,8 @@ int main(void){// activate grader and set system clock to 80 MHz
   Sound_Init();         
   prev_sw = NOT_PRESSED;
   state = QUIET;
-  num_presses = 0;
   EnableInterrupts();   // enable after all initialization are done
   while(1){
-
     // main program is free to perform other tasks
     // do not use WaitForInterrupt() here, it may cause the TExaS to crash
   }
