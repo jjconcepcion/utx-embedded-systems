@@ -47,6 +47,7 @@
 #define QUIET                 0
 static volatile unsigned long prev_sw;
 static volatile unsigned long state;
+static volatile unsigned long num_presses;
 
 // basic functions defined at end of startup.s
 void DisableInterrupts(void); // Disable interrupts
@@ -72,7 +73,19 @@ void Sound_Init(void){
 
 // called at 880 Hz1/()
 void SysTick_Handler(void){
-
+  if (num_presses == 0 && prev_sw == NOT_PRESSED && SWITCH == PRESSED)
+    state = TOGGLE;
+  else if (num_presses == 0 && prev_sw == PRESSED && SWITCH == NOT_PRESSED)
+    num_presses = 1;
+  else if (num_presses == 1 && prev_sw == NOT_PRESSED && SWITCH == PRESSED)
+    state = QUIET;
+  else if (num_presses == 1 && prev_sw == PRESSED && SWITCH == NOT_PRESSED)
+    num_presses = 0;
+  prev_sw = SWITCH;
+  if (state == TOGGLE)
+    SOUND ^= 0x04;
+  else
+    SOUND = 0;
 }
 
 int main(void){// activate grader and set system clock to 80 MHz
@@ -80,6 +93,7 @@ int main(void){// activate grader and set system clock to 80 MHz
   Sound_Init();         
   prev_sw = NOT_PRESSED;
   state = QUIET;
+  num_presses = 0;
   EnableInterrupts();   // enable after all initialization are done
   while(1){
 
