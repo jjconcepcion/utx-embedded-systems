@@ -96,6 +96,7 @@ void Sound_Init(void){
   GPIO_PORTA_DR8R_R |= 0x04;              // set 8mA drive stregnth for PA2
   GPIO_PORTA_PDR_R |= 0x08;               // enable pull-down resistor for PA3
   GPIO_PORTA_DEN_R |= 0x0C;               // enable digital I/O
+  GPIO_PORTA_PCTL_R &= ~0x0000FF00;       // GPIO PA3,PA2
   NVIC_ST_CTRL_R &= ~NVIC_ST_CTRL_ENABLE; // disable SysTick during setup
   NVIC_ST_RELOAD_R  = 90908;  // reload = int((1/(freq_interrupt*freq_bus))-1)
   NVIC_ST_CURRENT_R = 0;                  // write any value to clear current
