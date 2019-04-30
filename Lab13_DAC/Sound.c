@@ -16,7 +16,7 @@
 // Input: none
 // Output: none
 void Sound_Init(void){
-  
+  DAC_Init();
 }
 
 // **************Sound_Tone*********************
