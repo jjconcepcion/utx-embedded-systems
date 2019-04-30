@@ -39,6 +39,10 @@ void Sound_Init(void){
 // Output: none
 void Sound_Tone(unsigned long period){
 // this routine sets the RELOAD and starts SysTick
+  NVIC_ST_CTRL_R &= ~0x1;       // disable SysTick
+  NVIC_ST_RELOAD_R = (period-1)&0x00FFFFFF; // reload period for tone
+  NVIC_ST_CURRENT_R = 0;        // clear current
+  NVIC_ST_CTRL_R = 0x7;         // reenable SyStick
 }
 
 
