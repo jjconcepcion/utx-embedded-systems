@@ -9,14 +9,22 @@
 
 #include "Piano.h"
 #include "tm4c123gh6pm.h"
+#include <stdint.h>
 
 
 // **************Piano_Init*********************
-// Initialize piano key inputs
+// Initialize piano key inputs (Port E bits 3-0)
 // Input: none
 // Output: none
 void Piano_Init(void){ 
-  
+  unsigned long volatile delay;
+  SYSCTL_RCGC2_R |= SYSCTL_RCGC2_GPIOE; // enable clock
+  delay = SYSCTL_RCGC2_R;
+  GPIO_PORTE_DIR_R &= ~0x0F;          // set PE3-0 as input
+  GPIO_PORTE_AFSEL_R &= ~0x0F;        // disable alt func
+  GPIO_PORTE_DEN_R |= 0x0F;           // enable digital I/O
+  GPIO_PORTE_AMSEL_R &= ~0x0F;        // disable analog mode
+  GPIO_PORTE_PCTL_R &= ~0x0000FFFF;   // GPIO PE3-0
 }
 // **************Piano_In*********************
 // Input from piano key inputs
