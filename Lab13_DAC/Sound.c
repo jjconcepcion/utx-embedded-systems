@@ -11,6 +11,12 @@
 #include "tm4c123gh6pm.h"
 #include <stdint.h>
 
+// **************Waveform*********************
+// 4-bit 32 element sine wave
+const unsigned long N_WAVE_ELEM = 32;
+const unsigned char SineWave[N_WAVE_ELEM] =
+{8,9,10,11,12,13,14,15,15,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,1,1,2,3,4,5,6,7};
+
 // **************Sound_Init*********************
 // Initialize Systick periodic interrupts
 // Also calls DAC_Init() to initialize DAC
