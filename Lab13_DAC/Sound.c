@@ -27,7 +27,7 @@ void Sound_Init(void){
   DAC_Init();
   Index = 0;
   NVIC_ST_CTRL_R &= ~0x1;   // disable SysTick during setup
-  NVIC_ST_RELOAD_R = 0x00FFFFFF;  //initial reload value
+  NVIC_ST_RELOAD_R = 0;     // initial reload value
   NVIC_ST_CURRENT_R = 0;    // write any value to clear current
   NVIC_ST_CTRL_R = 0x7;     // enable SysTick with system clk src and interrups
 }
