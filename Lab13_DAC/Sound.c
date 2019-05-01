@@ -16,6 +16,7 @@
 const unsigned long N_WAVE_ELEM = 32;
 const unsigned char SineWave[N_WAVE_ELEM] =
 {8,9,10,11,12,13,14,15,15,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,1,1,2,3,4,5,6,7};
+unsigned char Index;    // index varies from 0 to 31
 
 // **************Sound_Init*********************
 // Initialize Systick periodic interrupts
@@ -24,6 +25,7 @@ const unsigned char SineWave[N_WAVE_ELEM] =
 // Output: none
 void Sound_Init(void){
   DAC_Init();
+  Index = 0;
   NVIC_ST_CTRL_R &= ~0x1;   // disable SysTick during setup
   NVIC_ST_RELOAD_R = 0x00FFFFFF;  //initial reload value
   NVIC_ST_CURRENT_R = 0;    // write any value to clear current
@@ -57,5 +59,6 @@ void Sound_Off(void){
 // Interrupt service routine
 // Executed every 12.5ns*(period)
 void SysTick_Handler(void){
-   
+  Index = (Index+1)&0x1F;
+  DAC_Out(SineWave[Index]);   // output one waveform segment each interrupt
 }
