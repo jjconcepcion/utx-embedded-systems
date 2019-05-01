@@ -5,6 +5,10 @@
 // Daniel Valvano, Jonathan Valvano
 // December 29, 2014
 
+// Enumeration for note frequencies (Hz)
+enum NOTE { C_Note = 523, D_Note = 587, E_Note = 659, G_Note = 783 };
+typedef enum NOTE Note;
+
 // **************Sound_Init*********************
 // Initialize Systick periodic interrupts
 // Also initializes DAC
