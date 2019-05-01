@@ -11,6 +11,7 @@
 #include "tm4c123gh6pm.h"
 #include <stdint.h>
 
+const unsigned long BUS_CLK_FREQ = 80000000;    // system clock 80MHz
 // **************Waveform*********************
 // 4-bit 32 element sine wave
 const unsigned long N_WAVE_ELEM = 32;
@@ -63,3 +64,16 @@ void SysTick_Handler(void){
   Index = (Index+1)&0x1F;
   DAC_Out(SineWave[Index]);   // output one waveform segment each interrupt
 }
+
+// **************Sound_Play*********************
+// Wrapper function to Sound_Tone to change interrupt period
+// according to note frequency
+// Input: Note
+//          enumeration for note frequency
+// Output: none
+void Sound_Play(Note note) {
+  if (note)
+    Sound_Tone(BUS_CLK_FREQ/(N_WAVE_ELEM*(unsigned long)note));
+  else
+    Sound_Off();
+};

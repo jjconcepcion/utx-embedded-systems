@@ -25,9 +25,15 @@ void Sound_Init(void);
 // Output: none
 void Sound_Tone(unsigned long period);
 
-
 // **************Sound_Off*********************
 // stop outputing to DAC
 // Output: none
 void Sound_Off(void);
 
+// **************Sound_Play*********************
+// Wrapper function to Sound_Tone to change interrupt period
+// according to note frequency
+// Input: Note
+//          enumeration for note frequency
+// Output: none
+void Sound_Play(Note note);
