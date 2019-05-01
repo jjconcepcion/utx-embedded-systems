@@ -5,6 +5,10 @@
 // Daniel Valvano, Jonathan Valvano
 // December 29, 2014
 
+// Enumeration for piano input switch values
+enum PIANO_KEY { C_Key = 0x01, D_Key = 0x02, E_Key = 0x04, G_Key = 0x08 };
+typedef enum PIANO_KEY Piano_Key;
+
 // **************Piano_Init*********************
 // Initialize piano key inputs
 // Input: none
