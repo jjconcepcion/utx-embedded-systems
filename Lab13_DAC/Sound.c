@@ -52,7 +52,8 @@ void Sound_Tone(unsigned long period){
 // stop outputing to DAC
 // Output: none
 void Sound_Off(void){
- // this routine stops the sound output
+  NVIC_ST_CTRL_R &= ~0x1;   // disable SysTick
+  DAC_Out(0);
 }
 
 
