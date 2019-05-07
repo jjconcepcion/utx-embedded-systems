@@ -50,7 +50,10 @@ unsigned long Flag;       // 1 means valid Distance, 0 means Distance is empty
 // Input: sample  12-bit ADC sample
 // Output: 32-bit distance (resolution 0.001cm)
 unsigned long Convert(unsigned long sample){
-  return 0;  // replace this line with real code
+  // Calibrations Constants A, B
+  static const unsigned long A = 500;
+  static const unsigned long B = 0;
+  return ((A*sample)>>10)+B;  
 }
 
 // Initialize SysTick interrupts to trigger at 40 Hz, 25 ms
