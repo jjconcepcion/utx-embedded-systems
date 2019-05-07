@@ -67,7 +67,9 @@ void SysTick_Init(unsigned long period){
 }
 // executes every 25 ms, collects a sample, converts and stores in mailbox
 void SysTick_Handler(void){ 
-
+  ADCdata = ADC0_In();          // sample ADC
+  Distance = Convert(ADCdata);  // convert sample to distance
+  Flag = 1;                     // set mailbox flag
 }
 
 //-----------------------UART_ConvertDistance-----------------------
@@ -149,7 +151,7 @@ int main(void){
 
   EnableInterrupts();
 // print a welcome message  (optional)
-  while(1){ 
+  while(1){
 // read mailbox
 // output to Nokia5110 LCD (optional)
   }
