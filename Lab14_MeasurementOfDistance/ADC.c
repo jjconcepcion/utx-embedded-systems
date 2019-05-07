@@ -24,6 +24,7 @@
 
 #include "ADC.h"
 #include "tm4c123gh6pm.h"
+#include <stdint.h>
 
 // This initialization function sets up the ADC 
 // Max sample rate: <=125,000 samples/second
@@ -31,7 +32,22 @@
 // SS3 1st sample source:  channel 1
 // SS3 interrupts: enabled but not promoted to controller
 void ADC0_Init(void){ 
-  
+  volatile unsigned long delay;
+  SYSCTL_RCGC2_R |= SYSCTL_RCGC2_GPIOE; // enable port E clock
+  delay = SYSCTL_RCGC2_R;               // allow time for clock to stabilize
+  GPIO_PORTE_DIR_R &= ~0x04;            // set PE2 as input
+  GPIO_PORTE_AFSEL_R |= 0x04;           // enable alternate function on PE2
+  GPIO_PORTE_DEN_R &= ~0x04;            // disable digital I/O on PE2
+  GPIO_PORTE_AMSEL_R |= 0x04;           // enable analog mode on PE2
+  SYSCTL_RCGC0_R |= SYSCTL_RCGC0_ADC0;  // enable ADC module 0 clock
+  delay = SYSCTL_RCGC2_R;
+  SYSCTL_RCGC0_R &= ~0x00000300;        // set ADC0 sample speed 125K
+  ADC0_SSPRI_R = 0x0123;                // set highest priority for SS3
+  ADC0_ACTSS_R &= ~0x00000008;          // disable SS3 for configuration
+  ADC0_EMUX_R &= ~0xF000;               // set SS3 software trigger event
+  ADC0_SSMUX3_R += 1;                   // set AIN1(PE2) as SS3 input channel
+  ADC0_SSCTL3_R = 0x6;                  // clear TS0 and D0; set IE0 and END0
+  ADC0_ACTSS_R |= 0x00000008;           // enable SS3
 }
 
 

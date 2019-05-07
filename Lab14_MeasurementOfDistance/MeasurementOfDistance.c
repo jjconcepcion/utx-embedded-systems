@@ -106,7 +106,7 @@ int main2(void){
 int main(void){ 
   volatile unsigned long delay;
   TExaS_Init(ADC0_AIN1_PIN_PE2, SSI0_Real_Nokia5110_Scope);
-// initialize ADC0, channel 1, sequencer 3
+  ADC0_Init();    // initialize ADC0, channel 1, sequencer 3
 // initialize Nokia5110 LCD (optional)
 // initialize SysTick for 40 Hz interrupts
 // initialize profiling on PF1 (optional)
