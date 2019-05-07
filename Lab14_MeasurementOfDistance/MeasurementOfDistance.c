@@ -75,7 +75,34 @@ void SysTick_Handler(void){
 //10000 to "*.*** cm"  any value larger than 9999 converted to "*.*** cm"
 void UART_ConvertDistance(unsigned long n){
 // as part of Lab 11 you implemented this function
-
+  char pos, ch;
+  // output string terminators: space + "cm" + null
+  String[8] = '\0';
+  String[7] = 'm';
+  String[6] = 'c';
+  String[5] = 0x20;     // space ascii
+  String[1] = '.';      // decimal point
+  // generate output string for invalid numbers
+  if (n > 9999) {
+    String[4] = '*';
+    String[3] = '*';
+    String[2] = '*';
+    String[0] = '*';
+    return;
+  }
+  // for numbers 0-9999
+  // perform decimal to ascii conversion beginning from the least significant digit
+  pos = 4;
+  while (pos >= 0) {
+    if (pos == 1) {     // skip decimal point position
+      pos--;
+      continue;
+    }
+    ch = (n % 10) + '0';
+    n /= 10;
+    String[pos] = ch;
+    pos--;
+  }
 }
 
 // main1 is a simple main program allowing you to debug the ADC interface
