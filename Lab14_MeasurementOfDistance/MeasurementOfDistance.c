@@ -155,6 +155,7 @@ int main(void){
     Flag = 0;                         // clear mailbox flag
     while( Flag == 0);                // wait for sampled distance
     UART_ConvertDistance(Distance);   // read mailbox
-// output to Nokia5110 LCD (optional)
+    Nokia5110_Clear();
+    Nokia5110_OutString(String);      // output to Nokia5110 LCD
   }
 }
