@@ -55,6 +55,11 @@ void ADC0_Init(void){
 // Busy-wait Analog to digital conversion
 // Input: none
 // Output: 12-bit result of ADC conversion
-unsigned long ADC0_In(void){  
-  return 0; // replace this line with proper code
+unsigned long ADC0_In(void){
+  unsigned long result;
+  ADC0_PSSI_R |= ADC_PSSI_SS3;            // initiate sample sequencer 3
+  while ((ADC0_RIS_R&ADC_RIS_INR3) == 0); // wait for sample conversion
+  result = ADC0_SSFIFO3_R&0xFFF;          // read result
+  ADC0_ISC_R = ADC_ISC_IN3;               // acknowledge (write to clear)
+  return result;
 }
