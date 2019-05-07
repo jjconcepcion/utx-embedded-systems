@@ -28,7 +28,7 @@
 // Slide pot pin 2 connected to PE2(Ain1) and PD3
 // Slide pot pin 1 connected to ground
 
-
+#include <stdint.h>
 #include "ADC.h"
 #include "tm4c123gh6pm.h"
 #include "Nokia5110.h"
@@ -58,7 +58,10 @@ unsigned long Convert(unsigned long sample){
 
 // Initialize SysTick interrupts to trigger at 40 Hz, 25 ms
 void SysTick_Init(unsigned long period){
-
+  NVIC_ST_CTRL_R &= ~0x1;       // disable
+  NVIC_ST_RELOAD_R = (period-1)&0x00FFFFFF; // set interrupt period
+  NVIC_ST_CURRENT_R = 0;        // clear current (write any value)
+  NVIC_ST_CTRL_R |= 0x7;        // set CLK_SRC, INTEN, ENABLE
 }
 // executes every 25 ms, collects a sample, converts and stores in mailbox
 void SysTick_Handler(void){ 
