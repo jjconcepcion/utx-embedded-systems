@@ -152,7 +152,9 @@ int main(void){
   EnableInterrupts();
 // print a welcome message  (optional)
   while(1){
-// read mailbox
+    Flag = 0;                         // clear mailbox flag
+    while( Flag == 0);                // wait for sampled distance
+    UART_ConvertDistance(Distance);   // read mailbox
 // output to Nokia5110 LCD (optional)
   }
 }
